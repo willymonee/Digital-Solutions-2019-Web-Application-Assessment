@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>fireworks.html</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<nav>
+ <a href="events-citycycle.html">CityCycle |</a>
+ <a href="events-citycycle-20-or-more.html">CityCycle(Displaying Only 20 or More) |</a>
+ <div class = "current"><a href="fireworks.html">Fireworks |</a></div> 
+	</nav>
+	<h1>Firework Events</h1>
+	<div id = "fireworks">
+	</div>
+
+<script>
+var xhr = new XMLHttpRequest();
+xhr.open('GET',
+'https://data.qld.gov.au/api/action/datastore_search?resource_id=346d58fc-b7c1-4c38-bf4d-c9d5fb43ce7b&q="PUBLIC"', true);
+xhr.send(null);
+xhr.onreadystatechange = function () {
+	if (this.readyState == 4 && this.status == 200) {
+		// extract the data
+		myJSON = xhr.responseText;
+		var myObj = JSON.parse(myJSON);
+		myObj = myObj["result"]["records"];
+		// set up the table
+		var out = "<table border='1'>";
+		out += "<tr><td>Event Type</td><td>Display Date</td><td>Times(s)</td><td>Display Address</td><td>Suburb</td><td>Postcode</td></tr>"
+		// get the data
+		console.log(myObj);
+		for (var i in myObj) {
+			out += "<tr><td>" +myObj[i]["Event Type"] + "</td><td>" + myObj[i]["Display Date"] + "</td><td>" + myObj[i]["Times(s)"] + "</td><td>" + myObj[i]["Display Address"] + "</td><td>" + myObj[i].Suburb + "</td><td>" + myObj[i].PCode + "</td></tr>";
+		}
+		out += "</table>";
+		document.getElementById("fireworks").innerHTML = out;
+	}
+}
+</script>
+
+</body>
+</html>

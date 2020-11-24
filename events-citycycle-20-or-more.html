@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CityCycle</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+<nav>
+<a href="events-citycycle.html">CityCycle |</a> 
+<div class = "current"><a href="events-citycycle-20-or-more.html">CityCycle(Displaying Only 20 or More) |</a></div>
+<a href="fireworks.html">Fireworks</a> 
+</nav>
+	<h1>CityCycle (Displaying ONLY 20 or more)</h1>
+	<div id = "bicycles">
+	</div>
+	
+<script>
+var xhr = new XMLHttpRequest(); 
+xhr.open('GET', 'https://api.jcdecaux.com/vls/v1/stations?contract=Brisbane&apiKey=43bb9375910f4985956fe93ba620a25aaf221311', true);
+xhr.send(null);
+		
+xhr.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		myJSON= xhr.responseText;
+		var myObj = JSON.parse(myJSON);
+		//display data into table format
+		var out = "<table border = '1'>";
+		out += "<tr><td>Bike Location</td><td>Latitude</td><td>Longitude</td><td>Bikes Available</td></tr>"
+		//get data
+		for (var i in myObj) {
+			if (myObj[i].available_bikes >= 20) {
+				out += "<tr><td>" +myObj[i].name + "</td><td>" + myObj[i].position.lat + "</td><td>" + myObj[i].position.lng + "</td><td>" + myObj[i].available_bikes + "</td></tr>";
+			}
+		}
+		out += "</table>";
+		document.getElementById("bicycles").innerHTML = out;
+	}
+}
+</script>
+	
+</body>
+</html>
